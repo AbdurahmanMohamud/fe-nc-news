@@ -78,7 +78,6 @@ input {
   padding: 20px;
 }
 
-
 .article-card .hover-info {
   position: absolute;
   top: 50%;
@@ -97,3 +96,55 @@ input {
   display: block;
 }
 
+.solo-image {
+  border: solid black 5px;
+  border-radius: 15%;
+  padding: 10px;
+  height: 700px;
+  width: 700px;
+}
+
+.title {
+  text-align: center;
+  font-size: 70px;
+  padding: 1px;
+}
+
+.description-div {
+  height: 700px;
+  width: 1000px;
+}
+
+.description {
+  line-height: 1.6;
+  font-size: 20px;
+}
+
+.comments-votes {
+  height: 400px;
+  width: 1000px;
+}
+
+.article-content {
+  display: flex;
+}
+
+.article-image-div {
+  flex: 2rem;
+}
+
+.article-text {
+  flex: 1rem;
+}
+
+.comment-section {
+  flex: 2rem;
+}
+
+.vote button {
+  margin: 20px;
+  padding: 10px;
+  background-color: gray;
+  border-radius: 20px;
+  cursor: pointer;
+}

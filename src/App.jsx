@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "./Components/Header";
 import ArticleContainer from "./Components/ArticleContainer";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Article from "./Components/Article";
 import "./App.css";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             />
           }
         />
+        <Route path="/:article_id" element={<Article articles={articles} />} />
       </Routes>
     </BrowserRouter>
   );
