@@ -1,20 +1,23 @@
+import { Link } from "react-router-dom";
+
 function ArticleCard({ article }) {
   let source = article.article_img_url;
-  let path = `/${article.article_id}`;
+  let path = `/articles/${article.article_id}`;
 
   return (
     <li className="article-card">
       <div className="image-container">
-        <a href={path}>
+        <Link to={path}>
           <img src={source} className="image article-link" />
-        </a>
+        </Link>
       </div>
+      <Link to={path}>
       <div className="article-info">
         <h2>{article.title}</h2>
       </div>
-      <a href={path}>
+      
         <button className="hover-info">Click here for more info</button>
-      </a>
+      </Link>
     </li>
   );
 }
