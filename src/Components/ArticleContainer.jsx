@@ -1,3 +1,4 @@
+import { getAllArticles } from "../apiCalls";
 import ArticleCard from "./ArticleCard";
 import { useState, useEffect } from "react";
 
@@ -8,20 +9,10 @@ function ArticleContainer({ search, setSearch, articles, setArticles }) {
   useEffect(() => {
     setIsLoading(true);
     setIsError(false);
-
-    const url = new URL("https://nc-news-y5oc.onrender.com/api/articles");
-    // check print screen for explanation
-    url.searchParams.set("search", search);
-
-    fetch(url.toString())
-      .then((response) => {
-        return response.json();
-      })
+    getAllArticles()
       .then((data) => {
         setIsLoading(false);
         setIsError(false);
-        // if left handside is null or undifined, use the right handside
-
         setArticles(data);
       })
       .catch((err) => {
@@ -29,11 +20,12 @@ function ArticleContainer({ search, setSearch, articles, setArticles }) {
         setIsError(true);
       });
   }, [search]);
+ 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error fetching article details.</p>;
-  console.log(articles);
+  
   return (
-    <ul>
+    <ul className="articles-ul">
       <div className="container">
         {articles.map((article) => {
           return <ArticleCard article={article} key={article.article_id} />;

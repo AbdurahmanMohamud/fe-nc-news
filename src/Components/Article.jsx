@@ -1,20 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { downvote, getArticleById, getCommentsById, upvote } from "../apiCalls";
 
-function Article({ articles }) {
+function Article() {
   const { article_id } = useParams();
   const [article, setArticle] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [comments, setComments] = useState([]);
-  const [votes, setVotes] = useState(0);
+
   useEffect(() => {
     setIsLoading(true);
     setIsError(false);
-    fetch(`https://nc-news-y5oc.onrender.com/api/articles/${article_id}`)
-      .then((article) => {
-        return article.json();
-      })
+    getArticleById(article_id)
       .then((article) => {
         setIsLoading(false);
         setIsError(false);
@@ -27,29 +25,34 @@ function Article({ articles }) {
   }, [article_id]);
 
   useEffect(() => {
-    fetch(
-      `https://nc-news-y5oc.onrender.com/api/articles/${article_id}/comments`
-    )
-      .then((comments) => {
-        return comments.json();
-      })
-      .then((comments) => {
-        setComments(comments);
-      });
-  }, []);
-
-  useEffect(() => {
-    let totalVotes = 0;
-    comments.map((comment) => {
-      return (totalVotes += comment.votes);
+    getCommentsById(article_id).then((comments) => {
+      setComments(comments);
     });
-    setVotes(totalVotes);
-  });
-  let count = 0;
+  }, [article_id]);
+
+  function incrLike() {
+    upvote(article_id).then(({ data }) => {
+      setArticle(data)
+    });
+  }
+
+  function decrLike() {
+    downvote(article_id).then(({ data }) => {
+      setArticle(data)
+    });
+  }
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error fetching article details.</p>;
+
   return (
     <main className="article-content">
       <section className="article-image-div">
-        <img src={article.article_img_url} alt="Article-image" />
+        <img
+          className="solo-image"
+          src={article.article_img_url}
+          alt="Article-image"
+        />
       </section>
 
       <section className="article-text">
@@ -64,24 +67,26 @@ function Article({ articles }) {
         <br />
         <br />
         <div className="vote">
-          <button>Upvote</button>
-          <button>Downvote</button>
-          <h3>Votes: {votes}</h3>
+          <button onClick={incrLike}>Upvote</button>
+          <button onClick={decrLike}>Downvote</button>
+          <h3>Votes:{article.votes}</h3>
         </div>
       </section>
 
       <section className="comment-section">
         <div>
           <h3>Comments:</h3>
-          {comments.map(
-            (comment) => (
-              (count += 1),
-              (
-                <p key={comment.comment_id}>
-                  {count}:{comment.body}
-                </p>
-              )
-            )
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <p key={comment.comment_id} className="comment">
+                -:{comment.body}
+                <br />
+                <b>Votes:</b>
+                {comment.votes}
+              </p>
+            ))
+          ) : (
+            <p>No comments yet...</p>
           )}
         </div>
       </section>

@@ -28,7 +28,7 @@ function App() {
             />
           }
         />
-        <Route path="/:article_id" element={<Article articles={articles} />} />
+        <Route path="/articles/:article_id" element={<Article />} />
       </Routes>
     </BrowserRouter>
   );
