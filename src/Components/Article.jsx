@@ -1,6 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { downvote, getArticleById, getCommentsById, upvote } from "../apiCalls";
+import {
+  downvote,
+  getArticleById,
+  getCommentsById,
+  upvote,
+  postCommentById,
+} from "../apiCalls";
 
 function Article() {
   const { article_id } = useParams();
@@ -8,6 +14,7 @@ function Article() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [comments, setComments] = useState([]);
+  const [commentToSubmit, setCommentToSubmit] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,19 +39,29 @@ function Article() {
 
   function incrLike() {
     upvote(article_id).then(({ data }) => {
-      setArticle(data)
+      setArticle(data);
     });
   }
 
   function decrLike() {
     downvote(article_id).then(({ data }) => {
-      setArticle(data)
+      setArticle(data);
     });
   }
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error fetching article details.</p>;
 
+  function submitComment(e) {
+    e.preventDefault();
+    const commentObject = { username: "grumpy19", body: commentToSubmit };
+    postCommentById(article_id, commentObject);
+    setComments([
+      { ...commentObject, comment_id: comments.length + 1 },
+      ...comments,
+    ]);
+    setCommentToSubmit("");
+  }
   return (
     <main className="article-content">
       <section className="article-image-div">
@@ -71,18 +88,30 @@ function Article() {
           <button onClick={decrLike}>Downvote</button>
           <h3>Votes:{article.votes}</h3>
         </div>
+        <div>
+          <h3>Add a Comment:</h3>
+          <textarea
+            id="comment-area"
+            value={commentToSubmit}
+            onChange={(e) => setCommentToSubmit(e.target.value)}
+            placeholder="Write a comment..."
+          />
+          <button className="comment-button" onClick={submitComment}>
+            Submit
+          </button>
+        </div>
       </section>
 
       <section className="comment-section">
         <div>
           <h3>Comments:</h3>
           {comments.length > 0 ? (
-            comments.map((comment) => (
-              <p key={comment.comment_id} className="comment">
-                -:{comment.body}
+            comments.map((individualComment) => (
+              <p key={individualComment.comment_id} className="comment">
+                -:{individualComment.body}
                 <br />
                 <b>Votes:</b>
-                {comment.votes}
+                {individualComment.votes}
               </p>
             ))
           ) : (

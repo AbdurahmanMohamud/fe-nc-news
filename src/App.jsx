@@ -6,26 +6,15 @@ import Article from "./Components/Article";
 import "./App.css";
 
 function App() {
-  const [search, setSearch] = useState("");
   const [articles, setArticles] = useState([]);
   return (
     <BrowserRouter>
-      <Header
-        articles={articles}
-        setArticles={setArticles}
-        search={search}
-        setSearch={setSearch}
-      />
+      <Header />
       <Routes>
         <Route
           path="/"
           element={
-            <ArticleContainer
-              search={search}
-              setSearch={setSearch}
-              articles={articles}
-              setArticles={setArticles}
-            />
+            <ArticleContainer articles={articles} setArticles={setArticles} />
           }
         />
         <Route path="/articles/:article_id" element={<Article />} />

@@ -2,7 +2,7 @@ import { getAllArticles } from "../apiCalls";
 import ArticleCard from "./ArticleCard";
 import { useState, useEffect } from "react";
 
-function ArticleContainer({ search, setSearch, articles, setArticles }) {
+function ArticleContainer({ articles, setArticles }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -19,11 +19,11 @@ function ArticleContainer({ search, setSearch, articles, setArticles }) {
         setIsLoading(false);
         setIsError(true);
       });
-  }, [search]);
- 
+  }, []);
+
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error fetching article details.</p>;
-  
+
   return (
     <ul className="articles-ul">
       <div className="container">

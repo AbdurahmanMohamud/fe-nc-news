@@ -1,8 +1,6 @@
-function SearchBar({ setSearch }) {
+function SearchBar() {
   const onSubmit = (event) => {
     event.preventDefault();
-    const value = new FormData(event.target).get("search");
-    setSearch(value);
   };
 
   return (

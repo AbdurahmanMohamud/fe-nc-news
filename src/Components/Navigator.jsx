@@ -1,4 +1,4 @@
-function Navigator({ articles, setArticles }) {
+function Navigator() {
   return (
     <ul className="nav-list">
       <li>
