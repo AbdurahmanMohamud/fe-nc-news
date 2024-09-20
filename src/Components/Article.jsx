@@ -55,13 +55,13 @@ function Article() {
   function submitComment(e) {
     e.preventDefault();
     const commentObject = { username: "grumpy19", body: commentToSubmit };
-    postCommentById(article_id, commentObject).then((addedComment) => {
-      console.log(addedComment)
-      setComments([addedComment, ...comments]);
-      setCommentToSubmit("");
-    });
+    postCommentById(article_id, commentObject);
+    setComments([
+      { ...commentObject, comment_id: comments.length + 1 },
+      ...comments,
+    ]);
+    setCommentToSubmit("");
   }
-
   return (
     <main className="article-content">
       <section className="article-image-div">
