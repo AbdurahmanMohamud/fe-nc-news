@@ -29,7 +29,17 @@ export function upvote(article_id) {
 }
 
 export function downvote(article_id) {
-  return url.patch(`/articles/${article_id}`, { inc_votes: -1 }).then((data) => {
-    return data;
-  });
+  return url
+    .patch(`/articles/${article_id}`, { inc_votes: -1 })
+    .then((data) => {
+      return data;
+    });
+}
+
+export function postCommentById(article_id, commentObject) {
+  return url
+    .post(`/articles/${article_id}/comments`, commentObject)
+    .then(({ body }) => {
+      return body;
+    });
 }
